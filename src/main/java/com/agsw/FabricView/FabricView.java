@@ -50,6 +50,7 @@ public class FabricView extends View {
     /*********************************************************************************************/
     // painting objects and properties
     private ArrayList<CDrawable> mDrawableList = new ArrayList<>();
+    private ArrayList<CDrawable> mRedoList = new ArrayList<>();
 
     /*********************************************************************************************/
     /************************************
@@ -480,5 +481,22 @@ public class FabricView extends View {
         this.mInteractionMode = interactionMode;
     }
 
+    public void undo() {
+        if (mDrawableList.isEmpty()) {
+            return;
+        }
+        CDrawable drawable = mDrawableList.remove(mDrawableList.size() - 1);
+        mRedoList.add(drawable);
+        invalidate();
+    }
 
+    public void redo() {
+        // TODO: 8/13/16 clear redo list if mDrawableList inserted new object
+        if (mRedoList.isEmpty()) {
+            return;
+        }
+        CDrawable drawable = mRedoList.remove(mRedoList.size() - 1);
+        mDrawableList.add(drawable);
+        invalidate();
+    }
 }

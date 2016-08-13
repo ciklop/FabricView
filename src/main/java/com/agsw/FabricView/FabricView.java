@@ -38,9 +38,10 @@ public class FabricView extends View {
     public static final int BACKGROUND_STYLE_GRAPH_PAPER = 2;
     // Interactive Modes
     public static final int DRAW_MODE = 0;
-    public static final int SELECT_MODE = 1; // TODO Support Object Selection.
-    public static final int ROTATE_MODE = 2; // TODO Support Object ROtation.
-    public static final int LOCKED_MODE = 3;
+    public static final int MOVE_MODE = 1;
+    public static final int SELECT_MODE = 2; // TODO Support Object Selection.
+    public static final int ROTATE_MODE = 3; // TODO Support Object ROtation.
+    public static final int LOCKED_MODE = 4;
     /*********************************************************************************************/
     public static final int NOTEBOOK_LEFT_LINE_PADDING = 120;
     private final RectF dirtyRect = new RectF();
@@ -48,6 +49,7 @@ public class FabricView extends View {
     // keep track of path and paint being in use
     CPath currentPath;
     Paint currentPaint;
+    CDrawable mMovable;
     /*********************************************************************************************/
     private boolean mClearRedoList = true;  // clear redo list when insert new drawable object
     private ArrayList<CDrawable> mRedoList = new ArrayList<>();
@@ -146,6 +148,8 @@ public class FabricView extends View {
         // delegate action to the correct method
         if (getInteractionMode() == DRAW_MODE)
             return onTouchDrawMode(event);
+        else if (getInteractionMode() == MOVE_MODE)
+            return onTouchMoveMode(event);
         else if (getInteractionMode() == SELECT_MODE)
             return onTouchSelectMode(event);
         else if (getInteractionMode() == ROTATE_MODE)
@@ -176,6 +180,45 @@ public class FabricView extends View {
         return false;
     }
 
+    /**
+     * Handles the touch input if the mode is set to move (last object)
+     *
+     * @param event the touch event
+     * @return the result of the action
+     */
+    private boolean onTouchMoveMode(MotionEvent event) {
+
+        if (mMovable == null) {
+
+            if (mDrawableList.isEmpty()) {
+                return false;
+            }
+
+            mMovable = mDrawableList.get(mDrawableList.size() - 1);
+        }
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                mMovable.setXcoords((int) event.getX());
+                mMovable.setYcoords((int) event.getY());
+            }
+            break;
+            case MotionEvent.ACTION_UP: {
+                mMovable.setXcoords((int) event.getX());
+                mMovable.setYcoords((int) event.getY());
+                mMovable = null;
+            }
+            break;
+            case MotionEvent.ACTION_MOVE: {
+                mMovable.setXcoords((int) event.getX());
+                mMovable.setYcoords((int) event.getY());
+            }
+            break;
+        }
+
+        invalidate();
+        return true;
+    }
 
     /**
      * Handles the touch input if the mode is set to draw

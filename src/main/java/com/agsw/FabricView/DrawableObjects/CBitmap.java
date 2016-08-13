@@ -48,13 +48,13 @@ public class CBitmap implements CDrawable {
     }
 
     @Override
-    public int getYcoords() {
-        return y;
+    public void setXcoords(int x) {
+        this.x = x;
     }
 
     @Override
-    public void setXcoords(int x) {
-        this.x = x;
+    public int getYcoords() {
+        return y;
     }
 
     @Override

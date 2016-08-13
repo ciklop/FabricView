@@ -12,6 +12,7 @@ public class CPath implements CDrawable {
     private Path mPath;
     private Paint mPaint;
     private int mRotDegree;
+
     public CPath() {
         mPath = new Path();
     }
@@ -22,13 +23,13 @@ public class CPath implements CDrawable {
     }
 
     @Override
-    public int getXcoords() {
-        return x;
+    public void setPaint(Paint p) {
+        mPaint = p;
     }
 
     @Override
-    public int getYcoords() {
-        return y;
+    public int getXcoords() {
+        return x;
     }
 
     @Override
@@ -37,13 +38,13 @@ public class CPath implements CDrawable {
     }
 
     @Override
-    public void setYcoords(int y) {
-        this.y = y;
+    public int getYcoords() {
+        return y;
     }
 
     @Override
-    public void setPaint(Paint p) {
-        mPaint = p;
+    public void setYcoords(int y) {
+        this.y = y;
     }
 
     @Override

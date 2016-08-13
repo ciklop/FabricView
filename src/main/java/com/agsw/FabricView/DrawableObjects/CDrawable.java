@@ -9,15 +9,15 @@ import android.graphics.Paint;
 public interface CDrawable {
     Paint getPaint();
 
-    int getXcoords();
+    void setPaint(Paint p);
 
-    int getYcoords();
+    int getXcoords();
 
     void setXcoords(int x);
 
-    void setYcoords(int y);
+    int getYcoords();
 
-    void setPaint(Paint p);
+    void setYcoords(int y);
 
     void draw(Canvas canvas);
 

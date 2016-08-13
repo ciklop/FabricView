@@ -2,7 +2,6 @@ package com.agsw.FabricView;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,68 +25,66 @@ import java.util.ArrayList;
 public class FabricView extends View {
 
     /**********************************************************************************************/
-    /*************************************     Vars    *******************************************/
-    /*********************************************************************************************/
-    // painting objects and properties
-    private ArrayList<CDrawable> mDrawableList = new ArrayList<>();
-    private int mColor = Color.BLACK;
-
-    // Canvas interaction modes
-    private int mInteractionMode = DRAW_MODE;
-
-    // background color of the library
-    private int mBackgroundColor = Color.WHITE;
-    // default style for the library
-    private Paint.Style mStyle = Paint.Style.STROKE;
-
-    // default stroke size for the library
-    private float mSize = 5f;
-
-    // flag indicating whether or not the background needs to be redrawn
-    private boolean mRedrawBackground;
-
-    // background mode for the library, default to blank
-    private int mBackgroundMode = BACKGROUND_STYLE_BLANK;
-
+    /*************************************
+     * Vars
+     *******************************************/
     // Default Notebook left line color
     public static final int NOTEBOOK_LEFT_LINE_COLOR = Color.RED;
-
-    // Flag indicating that we are waiting for a location for the text
-    private boolean mTextExpectTouch;
-
-    // Vars to decrease dirty area and increase performance
-    private float lastTouchX, lastTouchY;
-    private final RectF dirtyRect = new RectF();
-    
-    // keep track of path and paint being in use
-    CPath currentPath;
-    Paint currentPaint;
-
-    /*********************************************************************************************/
-    /************************************     FLAGS    *******************************************/
     /*********************************************************************************************/
     // Default Background Styles
     public static final int BACKGROUND_STYLE_BLANK = 0;
     public static final int BACKGROUND_STYLE_NOTEBOOK_PAPER = 1;
     public static final int BACKGROUND_STYLE_GRAPH_PAPER = 2;
-
     // Interactive Modes
     public static final int DRAW_MODE = 0;
     public static final int SELECT_MODE = 1; // TODO Support Object Selection.
     public static final int ROTATE_MODE = 2; // TODO Support Object ROtation.
     public static final int LOCKED_MODE = 3;
-
-    /*********************************************************************************************/
-    /**********************************     CONSTANTS    *****************************************/
     /*********************************************************************************************/
     public static final int NOTEBOOK_LEFT_LINE_PADDING = 120;
+    private final RectF dirtyRect = new RectF();
+    public int mAutoscrollDistance = 100; // TODO Support Autoscroll
+    // keep track of path and paint being in use
+    CPath currentPath;
+    Paint currentPaint;
+    /*********************************************************************************************/
+    // painting objects and properties
+    private ArrayList<CDrawable> mDrawableList = new ArrayList<>();
 
     /*********************************************************************************************/
-    /************************************     TO-DOs    ******************************************/
+    /************************************
+     * FLAGS
+     *******************************************/
+    private int mColor = Color.BLACK;
+    // Canvas interaction modes
+    private int mInteractionMode = DRAW_MODE;
+    // background color of the library
+    private int mBackgroundColor = Color.WHITE;
+    // default style for the library
+    private Paint.Style mStyle = Paint.Style.STROKE;
+    // default stroke size for the library
+    private float mSize = 5f;
+    // flag indicating whether or not the background needs to be redrawn
+    private boolean mRedrawBackground;
+    // background mode for the library, default to blank
+    private int mBackgroundMode = BACKGROUND_STYLE_BLANK;
+
+    /*********************************************************************************************/
+    /**********************************
+     * CONSTANTS
+     *****************************************/
+    // Flag indicating that we are waiting for a location for the text
+    private boolean mTextExpectTouch;
+
+    /*********************************************************************************************/
+    /************************************
+     * TO-DOs
+     ******************************************/
+    // Vars to decrease dirty area and increase performance
+    private float lastTouchX, lastTouchY;
     /*********************************************************************************************/
     private float mZoomLevel = 1.0f; //TODO Support Zoom
     private float mHorizontalOffset = 1, mVerticalOffset = 1; // TODO Support Offset and Viewport
-    public int mAutoscrollDistance = 100; // TODO Support Autoscroll
 
     /**
      * Default Constructor, sets sane values.
@@ -116,10 +113,7 @@ public class FabricView extends View {
         for (int i = 0; i < mDrawableList.size(); i++) {
             try {
                 mDrawableList.get(i).draw(canvas);
-            }
-
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
 
             }
         }
@@ -145,13 +139,14 @@ public class FabricView extends View {
             return onTouchSelectMode(event);
         else if (getInteractionMode() == ROTATE_MODE)
             return onTouchRotateMode(event);
-        // if none of the above are selected, delegate to locked mode
+            // if none of the above are selected, delegate to locked mode
         else
             return onTouchLockedMode(event);
     }
 
     /**
      * Handles touch event if the mode is set to locked
+     *
      * @param event the event to handle
      * @return false, shouldn't do anything with it for now
      */
@@ -162,6 +157,7 @@ public class FabricView extends View {
 
     /**
      * Handles the touch input if the mode is set to rotate
+     *
      * @param event the touch event
      * @return the result of the action
      */
@@ -172,11 +168,11 @@ public class FabricView extends View {
 
     /**
      * Handles the touch input if the mode is set to draw
+     *
      * @param event the touch event
      * @return the result of the action
      */
-    public boolean onTouchDrawMode(MotionEvent event)
-    {
+    public boolean onTouchDrawMode(MotionEvent event) {
         // get location of touch
         float eventX = event.getX();
         float eventY = event.getY();
@@ -245,6 +241,7 @@ public class FabricView extends View {
 
     /**
      * Handles the touch input if the mode is set to select
+     *
      * @param event the touch event
      */
     private boolean onTouchSelectMode(MotionEvent event) {
@@ -258,12 +255,13 @@ public class FabricView extends View {
      ******************************************/
     /**
      * Draw the background on the canvas
-     * @param canvas the canvas to draw on
+     *
+     * @param canvas         the canvas to draw on
      * @param backgroundMode one of BACKGROUND_STYLE_GRAPH_PAPER, BACKGROUND_STYLE_NOTEBOOK_PAPER, BACKGROUND_STYLE_BLANK
      */
     public void drawBackground(Canvas canvas, int backgroundMode) {
         canvas.drawColor(mBackgroundColor);
-        if(backgroundMode != BACKGROUND_STYLE_BLANK) {
+        if (backgroundMode != BACKGROUND_STYLE_BLANK) {
             Paint linePaint = new Paint();
             linePaint.setColor(Color.argb(50, 0, 0, 0));
             linePaint.setStyle(mStyle);
@@ -284,8 +282,9 @@ public class FabricView extends View {
 
     /**
      * Draws a graph paper background on the view
+     *
      * @param canvas the canvas to draw on
-     * @param paint the paint to use
+     * @param paint  the paint to use
      */
     private void drawGraphPaperBackground(Canvas canvas, Paint paint) {
         int i = 0;
@@ -313,8 +312,9 @@ public class FabricView extends View {
 
     /**
      * Draws a notebook paper background on the view
+     *
      * @param canvas the canvas to draw on
-     * @param paint the paint to use
+     * @param paint  the paint to use
      */
     private void drawNotebookPaperBackground(Canvas canvas, Paint paint) {
         int i = 0;
@@ -338,10 +338,11 @@ public class FabricView extends View {
 
     /**
      * Draw text on the screen
+     *
      * @param text the text to draw
-     * @param x the x location of the text
-     * @param y the y location of the text
-     * @param p the paint to use
+     * @param x    the x location of the text
+     * @param y    the y location of the text
+     * @param p    the paint to use
      */
     public void drawText(String text, int x, int y, Paint p) {
         mDrawableList.add(new CText(text, x, y, p));
@@ -360,6 +361,7 @@ public class FabricView extends View {
 
     /**
      * Retrieve the region needing to be redrawn
+     *
      * @param eventX The current x location of the touch
      * @param eventY the current y location of the touch
      */
@@ -408,10 +410,10 @@ public class FabricView extends View {
 
     /**
      * Gets what has been drawn on the canvas so far as a bitmap
+     *
      * @return Bitmap of the canvas.
      */
-    public Bitmap getCanvasBitmap()
-    {
+    public Bitmap getCanvasBitmap() {
         // build drawing cache of the canvas, use it to create a new bitmap, then destroy it.
         buildDrawingCache();
         Bitmap mCanvasBitmap = Bitmap.createBitmap(getDrawingCache());
@@ -433,6 +435,10 @@ public class FabricView extends View {
         return mBackgroundColor;
     }
 
+    public void setBackgroundColor(int mBackgroundColor) {
+        this.mBackgroundColor = mBackgroundColor;
+    }
+
     public int getBackgroundMode() {
         return mBackgroundMode;
     }
@@ -440,10 +446,6 @@ public class FabricView extends View {
     public void setBackgroundMode(int mBackgroundMode) {
         this.mBackgroundMode = mBackgroundMode;
         invalidate();
-    }
-
-    public void setBackgroundColor(int mBackgroundColor) {
-        this.mBackgroundColor = mBackgroundColor;
     }
 
     public Paint.Style getStyle() {

@@ -18,12 +18,12 @@ public class CText implements CDrawable {
         setPaint(p);
     }
 
-    public void setText(String t) {
-        mText = t;
-    }
-
     public String getText() {
         return mText;
+    }
+
+    public void setText(String t) {
+        mText = t;
     }
 
     @Override
@@ -32,13 +32,13 @@ public class CText implements CDrawable {
     }
 
     @Override
-    public int getXcoords() {
-        return x;
+    public void setPaint(Paint p) {
+        mPaint = p;
     }
 
     @Override
-    public int getYcoords() {
-        return y;
+    public int getXcoords() {
+        return x;
     }
 
     @Override
@@ -47,13 +47,13 @@ public class CText implements CDrawable {
     }
 
     @Override
-    public void setYcoords(int y) {
-        this.y = y;
+    public int getYcoords() {
+        return y;
     }
 
     @Override
-    public void setPaint(Paint p) {
-        mPaint = p;
+    public void setYcoords(int y) {
+        this.y = y;
     }
 
     @Override

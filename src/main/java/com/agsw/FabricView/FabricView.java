@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.agsw.FabricView.DrawableObjects.CBitmap;
 import com.agsw.FabricView.DrawableObjects.CDrawable;
 import com.agsw.FabricView.DrawableObjects.CPath;
+import com.agsw.FabricView.DrawableObjects.CRect;
 import com.agsw.FabricView.DrawableObjects.CText;
 
 import java.util.ArrayList;
@@ -344,10 +345,30 @@ public class FabricView extends View {
      * @param x    the x location of the text
      * @param y    the y location of the text
      * @param p    the paint to use
+     * @return the text on the screen
      */
-    public void drawText(String text, int x, int y, Paint p) {
-        mDrawableList.add(new CText(text, x, y, p));
+    public CText drawText(String text, int x, int y, Paint p) {
+        CText drawable = new CText(text, x, y, p);
+        mDrawableList.add(drawable);
         invalidate();
+        return drawable;
+    }
+
+    /**
+     * Draw rectangle on the screen
+     *
+     * @param xOrigin the x origin location
+     * @param yOrigin the y origin location
+     * @param xDest   the x destination location
+     * @param yDest   the y destination location
+     * @param p       the paint to use
+     * @return the rectangle on the screen
+     */
+    public CRect drawRect(int xOrigin, int yOrigin, int xDest, int yDest, Paint p) {
+        CRect drawable = new CRect(xOrigin, yOrigin, xDest, yDest, p);
+        mDrawableList.add(drawable);
+        invalidate();
+        return drawable;
     }
 
     /**
@@ -394,13 +415,15 @@ public class FabricView extends View {
      * @param width  the width of the image
      * @param height the height of the image
      * @param pic    the image itself
+     * @return the image on the screen
      */
-    public void drawImage(int x, int y, int width, int height, Bitmap pic) {
+    public CBitmap drawImage(int x, int y, int width, int height, Bitmap pic) {
         CBitmap bitmap = new CBitmap(pic, x, y);
         bitmap.setWidth(width);
         bitmap.setHeight(height);
         mDrawableList.add(bitmap);
         invalidate();
+        return bitmap;
     }
 
 

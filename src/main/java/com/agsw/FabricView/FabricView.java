@@ -49,9 +49,18 @@ public class FabricView extends View {
     CPath currentPath;
     Paint currentPaint;
     /*********************************************************************************************/
-    // painting objects and properties
-    private ArrayList<CDrawable> mDrawableList = new ArrayList<>();
+    private boolean mClearRedoList = true;  // clear redo list when insert new drawable object
     private ArrayList<CDrawable> mRedoList = new ArrayList<>();
+    // painting objects and properties
+    private ArrayList<CDrawable> mDrawableList = new ArrayList<CDrawable>() {
+        @Override
+        public boolean add(CDrawable drawable) {
+            if (mClearRedoList) {
+                mRedoList.clear();
+            }
+            return super.add(drawable);
+        }
+    };
 
     /*********************************************************************************************/
     /************************************
@@ -514,12 +523,13 @@ public class FabricView extends View {
     }
 
     public void redo() {
-        // TODO: 8/13/16 clear redo list if mDrawableList inserted new object
         if (mRedoList.isEmpty()) {
             return;
         }
         CDrawable drawable = mRedoList.remove(mRedoList.size() - 1);
+        mClearRedoList = false;
         mDrawableList.add(drawable);
+        mClearRedoList = true;
         invalidate();
     }
 }

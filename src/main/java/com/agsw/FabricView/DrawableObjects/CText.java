@@ -2,6 +2,7 @@ package com.agsw.FabricView.DrawableObjects;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 /**
  * Created by antwan on 10/3/2015.
@@ -69,5 +70,16 @@ public class CText implements CDrawable {
     @Override
     public void setRotation(int degree) {
         mRotDegree = degree;
+    }
+
+    /**
+     * Measure text size
+     *
+     * @return Size of text on screen
+     */
+    public Rect getBounds() {
+        Rect bounds = new Rect();
+        mPaint.getTextBounds(mText, 0, mText.length(), bounds);
+        return bounds;
     }
 }

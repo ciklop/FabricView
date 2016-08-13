@@ -27,21 +27,13 @@ public class CRect implements CDrawable {
     }
 
     @Override
-    public int getXcoords() {
-        return xOrigin > xDest ? xDest : xOrigin;
+    public void setPaint(Paint p) {
+        mPaint = p;
     }
 
     @Override
-    public int getYcoords() {
-        return yOrigin > yDest ? yDest : yOrigin;
-    }
-
-    public int getXdest() {
-        return xDest < xOrigin ? xOrigin : xDest;
-    }
-
-    public int getYdest() {
-        return yDest < yOrigin ? yOrigin : yDest;
+    public int getXcoords() {
+        return xOrigin > xDest ? xDest : xOrigin;
     }
 
     @Override
@@ -50,13 +42,29 @@ public class CRect implements CDrawable {
     }
 
     @Override
+    public int getYcoords() {
+        return yOrigin > yDest ? yDest : yOrigin;
+    }
+
+    @Override
     public void setYcoords(int y) {
         this.yOrigin = y;
     }
 
-    @Override
-    public void setPaint(Paint p) {
-        mPaint = p;
+    public int getXdest() {
+        return xDest < xOrigin ? xOrigin : xDest;
+    }
+
+    public void setXdest(int xDest) {
+        this.xDest = xDest;
+    }
+
+    public int getYdest() {
+        return yDest < yOrigin ? yOrigin : yDest;
+    }
+
+    public void setYdest(int yDest) {
+        this.yDest = yDest;
     }
 
     @Override
@@ -77,13 +85,5 @@ public class CRect implements CDrawable {
     @Override
     public void setRotation(int degree) {
         mRotDegree = degree;
-    }
-
-    public void setXdest(int xDest) {
-        this.xDest = xDest;
-    }
-
-    public void setYdest(int yDest) {
-        this.yDest = yDest;
     }
 }

@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.agsw.FabricView.DrawableObjects.CBitmap;
 import com.agsw.FabricView.DrawableObjects.CDrawable;
+import com.agsw.FabricView.DrawableObjects.CLine;
+import com.agsw.FabricView.DrawableObjects.CLineArrow;
 import com.agsw.FabricView.DrawableObjects.CPath;
 import com.agsw.FabricView.DrawableObjects.CRect;
 import com.agsw.FabricView.DrawableObjects.CText;
@@ -430,6 +432,40 @@ public class FabricView extends View {
      */
     public CRect drawRect(int xOrigin, int yOrigin, int xDest, int yDest, Paint p) {
         CRect drawable = new CRect(xOrigin, yOrigin, xDest, yDest, p);
+        mDrawableList.add(drawable);
+        invalidate();
+        return drawable;
+    }
+
+    /**
+     * Draw line on the screen
+     *
+     * @param xOrigin the x origin location
+     * @param yOrigin the y origin location
+     * @param xDest   the x destination location
+     * @param yDest   the y destination location
+     * @param p       the paint to use
+     * @return the rectangle on the screen
+     */
+    public CLine drawLine(int xOrigin, int yOrigin, int xDest, int yDest, Paint p) {
+        CLine drawable = new CLine(xOrigin, yOrigin, xDest, yDest, p);
+        mDrawableList.add(drawable);
+        invalidate();
+        return drawable;
+    }
+
+    /**
+     * Draw line arrow on the screen
+     *
+     * @param xOrigin the x origin location
+     * @param yOrigin the y origin location
+     * @param xDest   the x destination location
+     * @param yDest   the y destination location
+     * @param p       the paint to use
+     * @return the rectangle on the screen
+     */
+    public CLineArrow drawLineArrow(int xOrigin, int yOrigin, int xDest, int yDest, Paint p) {
+        CLineArrow drawable = new CLineArrow(xOrigin, yOrigin, xDest, yDest, p);
         mDrawableList.add(drawable);
         invalidate();
         return drawable;

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -186,7 +187,7 @@ public class FabricView extends View {
      * @param event the touch event
      * @return the result of the action
      */
-    private boolean onTouchMoveMode(MotionEvent event) {
+    public boolean onTouchMoveMode(MotionEvent event) {
 
         if (mMovable == null) {
 
@@ -197,21 +198,32 @@ public class FabricView extends View {
             mMovable = mDrawableList.get(mDrawableList.size() - 1);
         }
 
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+
+        if (mMovable instanceof CText) {
+            // make text display on top finger so they can see while dragging it
+            CText cText = (CText) mMovable;
+            Rect bounds = cText.getBounds();
+            x = (int) event.getX() - bounds.width() / 2;
+            y = (int) event.getY() - bounds.height() * 2;
+        }
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
-                mMovable.setXcoords((int) event.getX());
-                mMovable.setYcoords((int) event.getY());
+                mMovable.setXcoords(x);
+                mMovable.setYcoords(y);
             }
             break;
             case MotionEvent.ACTION_UP: {
-                mMovable.setXcoords((int) event.getX());
-                mMovable.setYcoords((int) event.getY());
+                mMovable.setXcoords(x);
+                mMovable.setYcoords(y);
                 mMovable = null;
             }
             break;
             case MotionEvent.ACTION_MOVE: {
-                mMovable.setXcoords((int) event.getX());
-                mMovable.setYcoords((int) event.getY());
+                mMovable.setXcoords(x);
+                mMovable.setYcoords(y);
             }
             break;
         }

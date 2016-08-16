@@ -24,4 +24,6 @@ public interface CDrawable {
     int getRotation();
 
     void setRotation(int degree);
+
+    void translateTo(int x, int y);
 }

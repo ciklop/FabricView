@@ -14,8 +14,8 @@ public class CText implements CDrawable {
 
     public CText(String s, int x, int y, Paint p) {
         setText(s);
-        setYcoords(y);
         setXcoords(x);
+        setYcoords(y);
         setPaint(p);
     }
 
@@ -59,7 +59,7 @@ public class CText implements CDrawable {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawText(getText(), (float) getXcoords(), (float) getYcoords(), mPaint);
+        canvas.drawText(getText(), getXcoords(), getYcoords(), mPaint);
     }
 
     @Override
@@ -70,6 +70,12 @@ public class CText implements CDrawable {
     @Override
     public void setRotation(int degree) {
         mRotDegree = degree;
+    }
+
+    @Override
+    public void translateTo(int x, int y) {
+        setXcoords(x);
+        setYcoords(y);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.agsw.FabricView.DrawableObjects;
 
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 
@@ -60,6 +61,20 @@ public class CPath implements CDrawable {
     @Override
     public void setRotation(int degree) {
         mRotDegree = degree;
+    }
+
+    @Override
+    public void translateTo(int x, int y) {
+
+        float dx = x - getXcoords();
+        float dy = y - getYcoords();
+
+        Matrix matrix = new Matrix();
+        matrix.postTranslate(dx, dy);
+        mPath.transform(matrix);
+
+        setXcoords(x);
+        setYcoords(y);
     }
 
     public void lineTo(float eventX, float eventY) {

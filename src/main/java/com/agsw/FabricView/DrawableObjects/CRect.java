@@ -86,4 +86,23 @@ public class CRect implements CDrawable {
     public void setRotation(int degree) {
         mRotDegree = degree;
     }
+
+    @Override
+    public void translateTo(int x, int y) {
+        int w = getWidth();
+        int h = getHeight();
+
+        setXcoords(x);
+        setYcoords(y);
+        setXdest(x + w);
+        setYdest(y + h);
+    }
+
+    public int getWidth() {
+        return Math.abs(getXcoords() - getXdest());
+    }
+
+    public int getHeight() {
+        return Math.abs(getYcoords() - getYdest());
+    }
 }

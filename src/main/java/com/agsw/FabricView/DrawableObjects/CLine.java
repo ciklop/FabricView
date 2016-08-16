@@ -87,4 +87,14 @@ public class CLine implements CDrawable {
     public void setRotation(int degree) {
         mRotDegree = degree;
     }
+
+    @Override
+    public void translateTo(int x, int y) {
+        int dx = getXdest() - getXcoords();
+        int dy = getYdest() - getYcoords();
+        setXcoords(x);
+        setYcoords(y);
+        setXdest(x + dx);
+        setYdest(y + dy);
+    }
 }

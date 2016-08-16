@@ -77,4 +77,10 @@ public class CBitmap implements CDrawable {
     public void setRotation(int degree) {
         mRotDegree = degree;
     }
+
+    @Override
+    public void translateTo(int x, int y) {
+        setXcoords(x);
+        setYcoords(y);
+    }
 }

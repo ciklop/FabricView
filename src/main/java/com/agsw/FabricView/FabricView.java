@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -39,6 +40,7 @@ public class FabricView extends View {
     public static final int BACKGROUND_STYLE_BLANK = 0;
     public static final int BACKGROUND_STYLE_NOTEBOOK_PAPER = 1;
     public static final int BACKGROUND_STYLE_GRAPH_PAPER = 2;
+    public static final int BACKGROUND_STYLE_IMAGE = 3;
     // Interactive Modes
     public static final int DRAW_MODE = 0;
     public static final int MOVE_MODE = 1;
@@ -53,6 +55,7 @@ public class FabricView extends View {
     CPath currentPath;
     Paint currentPaint;
     CDrawable mMovable;
+    CBitmap mBackground;
     /*********************************************************************************************/
     private boolean mClearRedoList = true;  // clear redo list when insert new drawable object
     private ArrayList<CDrawable> mRedoList = new ArrayList<>();
@@ -213,19 +216,16 @@ public class FabricView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
-                mMovable.setXcoords(x);
-                mMovable.setYcoords(y);
+                mMovable.translateTo(x, y);
             }
             break;
             case MotionEvent.ACTION_UP: {
-                mMovable.setXcoords(x);
-                mMovable.setYcoords(y);
+                mMovable.translateTo(x, y);
                 mMovable = null;
             }
             break;
             case MotionEvent.ACTION_MOVE: {
-                mMovable.setXcoords(x);
-                mMovable.setYcoords(y);
+                mMovable.translateTo(x, y);
             }
             break;
         }
@@ -250,6 +250,8 @@ public class FabricView extends View {
             case MotionEvent.ACTION_DOWN:
                 // create new path and paint
                 currentPath = new CPath();
+                currentPath.setXcoords((int) eventX);
+                currentPath.setYcoords((int) eventY);
                 currentPaint = new Paint();
                 currentPaint.setAntiAlias(true);
                 currentPaint.setColor(mColor);
@@ -295,10 +297,10 @@ public class FabricView extends View {
 
         // Include some padding to ensure nothing is clipped
         invalidate(
-                (int) (dirtyRect.left - 20),
-                (int) (dirtyRect.top - 20),
-                (int) (dirtyRect.right + 20),
-                (int) (dirtyRect.bottom + 20));
+                (int) (dirtyRect.left - 50),
+                (int) (dirtyRect.top - 50),
+                (int) (dirtyRect.right + 50),
+                (int) (dirtyRect.bottom + 50));
 
         // register most recent touch locations
         lastTouchX = eventX;
@@ -327,24 +329,29 @@ public class FabricView extends View {
      * @param backgroundMode one of BACKGROUND_STYLE_GRAPH_PAPER, BACKGROUND_STYLE_NOTEBOOK_PAPER, BACKGROUND_STYLE_BLANK
      */
     public void drawBackground(Canvas canvas, int backgroundMode) {
-        canvas.drawColor(mBackgroundColor);
-        if (backgroundMode != BACKGROUND_STYLE_BLANK) {
-            Paint linePaint = new Paint();
-            linePaint.setColor(Color.argb(50, 0, 0, 0));
-            linePaint.setStyle(mStyle);
-            linePaint.setStrokeJoin(Paint.Join.ROUND);
-            linePaint.setStrokeWidth(mSize - 2f);
-            switch (backgroundMode) {
-                case BACKGROUND_STYLE_GRAPH_PAPER:
-                    drawGraphPaperBackground(canvas, linePaint);
-                    break;
-                case BACKGROUND_STYLE_NOTEBOOK_PAPER:
-                    drawNotebookPaperBackground(canvas, linePaint);
-                default:
-                    break;
+
+        if (backgroundMode == BACKGROUND_STYLE_IMAGE) {
+            mBackground.draw(canvas);
+        } else {
+            canvas.drawColor(mBackgroundColor);
+            if (backgroundMode != BACKGROUND_STYLE_BLANK) {
+                Paint linePaint = new Paint();
+                linePaint.setColor(Color.argb(50, 0, 0, 0));
+                linePaint.setStyle(mStyle);
+                linePaint.setStrokeJoin(Paint.Join.ROUND);
+                linePaint.setStrokeWidth(mSize - 2f);
+                switch (backgroundMode) {
+                    case BACKGROUND_STYLE_GRAPH_PAPER:
+                        drawGraphPaperBackground(canvas, linePaint);
+                        break;
+                    case BACKGROUND_STYLE_NOTEBOOK_PAPER:
+                        drawNotebookPaperBackground(canvas, linePaint);
+                    default:
+                        break;
+                }
             }
+            mRedrawBackground = false;
         }
-        mRedrawBackground = false;
     }
 
     /**
@@ -569,6 +576,35 @@ public class FabricView extends View {
     public void setBackgroundMode(int mBackgroundMode) {
         this.mBackgroundMode = mBackgroundMode;
         invalidate();
+    }
+
+    public void setBackgroundImage(Bitmap bitmap) {
+
+        if (bitmap == null) {
+            return;
+        }
+
+        this.mBackgroundMode = BACKGROUND_STYLE_IMAGE;
+
+        Bitmap mutableBitmap;
+
+        if (bitmap.getWidth() > bitmap.getHeight()) {
+            mutableBitmap = rotate(bitmap, -90).copy(Bitmap.Config.ARGB_8888, true);
+        } else {
+            mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        }
+
+        mBackground = new CBitmap(mutableBitmap, 0, 0);
+        mBackground.setWidth(mutableBitmap.getWidth());
+        mBackground.setHeight(mutableBitmap.getHeight());
+
+        invalidate();
+    }
+
+    private Bitmap rotate(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
     public Paint.Style getStyle() {

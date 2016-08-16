@@ -266,7 +266,6 @@ public class FabricView extends View {
                 return true;
             case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_UP:
-                currentPath.lineTo(eventX, eventY);
                 // When the hardware tracks events faster than they are delivered, the
                 // event will contain a history of those skipped points.
                 int historySize = event.getHistorySize();

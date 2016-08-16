@@ -74,6 +74,13 @@ public class CText implements CDrawable {
 
     @Override
     public void translateTo(int x, int y) {
+
+        // CENTER ANCHOR + FLOAT ABOVE FINGER
+        Rect bounds = getBounds();
+        x = x - bounds.width() / 2;
+        y = y - bounds.height() * 2;
+        // CENTER ANCHOR + FLOAT ABOVE FIGNER
+
         setXcoords(x);
         setYcoords(y);
     }

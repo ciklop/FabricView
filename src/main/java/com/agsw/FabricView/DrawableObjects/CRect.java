@@ -92,6 +92,11 @@ public class CRect implements CDrawable {
         int w = getWidth();
         int h = getHeight();
 
+        //ANCHOR CENTER
+        x = x - w / 2;
+        y = y - h / 2;
+        //ANCHOR CENTER
+
         setXcoords(x);
         setYcoords(y);
         setXdest(x + w);

@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PointF;
+import android.graphics.RectF;
 
 /**
  * Created by antwan on 10/3/2015.
@@ -65,6 +67,15 @@ public class CPath implements CDrawable {
 
     @Override
     public void translateTo(int x, int y) {
+
+        // ANCHOR CENTER
+        RectF bounds = new RectF();
+        mPath.computeBounds(bounds, true);
+        PointF centerBounds = new PointF(bounds.left + bounds.width() / 2.f, bounds.top + bounds.height() / 2.f);
+        PointF vector = new PointF(getXcoords() - centerBounds.x, getYcoords() - centerBounds.y);
+        x = (int) (x + vector.x);
+        y = (int) (y + vector.y);
+        // ANCHOR CENTER
 
         float dx = x - getXcoords();
         float dy = y - getYcoords();

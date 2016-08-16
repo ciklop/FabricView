@@ -92,6 +92,12 @@ public class CLine implements CDrawable {
     public void translateTo(int x, int y) {
         int dx = getXdest() - getXcoords();
         int dy = getYdest() - getYcoords();
+
+        // CENTER ANCHOR
+        x = x - dx / 2;
+        y = y - dy / 2;
+        // CENTER ANCHOR
+
         setXcoords(x);
         setYcoords(y);
         setXdest(x + dx);

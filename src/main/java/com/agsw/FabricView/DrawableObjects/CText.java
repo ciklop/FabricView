@@ -78,8 +78,8 @@ public class CText implements CDrawable {
         // CENTER ANCHOR + FLOAT ABOVE FINGER
         Rect bounds = getBounds();
         x = x - bounds.width() / 2;
-        y = y - bounds.height() * 2;
-        // CENTER ANCHOR + FLOAT ABOVE FIGNER
+        y = y - 100; // on top finger 100 px
+        // CENTER ANCHOR + FLOAT ABOVE FINGER
 
         setXcoords(x);
         setYcoords(y);

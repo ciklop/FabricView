@@ -649,4 +649,11 @@ public class FabricView extends View {
         mClearRedoList = true;
         invalidate();
     }
+
+    public CDrawable getTopDrawable() {
+        if (mDrawableList.isEmpty()) {
+            return null;
+        }
+        return mDrawableList.get(mDrawableList.size() - 1);
+    }
 }

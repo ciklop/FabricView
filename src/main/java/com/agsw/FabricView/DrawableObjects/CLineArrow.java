@@ -42,7 +42,7 @@ public class CLineArrow extends CLine {
         float unitDx = dx / length;
         float unitDy = dy / length;
 
-        final int arrowSize = 30;
+        final int arrowSize = (int) getPaint().getStrokeWidth();
 
         p1 = new PointF(stop.x - unitDx * arrowSize - unitDy * arrowSize, stop.y - unitDy * arrowSize + unitDx * arrowSize);
         p2 = new PointF(stop.x - unitDx * arrowSize + unitDy * arrowSize, stop.y - unitDy * arrowSize - unitDx * arrowSize);

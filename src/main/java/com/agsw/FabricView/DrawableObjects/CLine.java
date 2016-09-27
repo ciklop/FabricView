@@ -4,9 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 /**
- * Created by ekino on 8/15/16.
+ * Created by Nguyen Hoang Anh Nguyen on 8/15/16.
  */
-// TODO: 8/15/16 Line support PointF
 public class CLine implements CDrawable {
 
     private int xOrigin, yOrigin;
